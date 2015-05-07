@@ -9,13 +9,13 @@ Following [Google ajax crawling standard](https://developers.google.com/webmaste
 How to use
 ------------
 ```
-$ ## Install PhantomJS, on Mac, you can: brew install phantomjs 
+$ ## 1. Install PhantomJS, on Mac, you can: brew install phantomjs 
 $ sudo apt-get install phantomjs  
 $
-$ ## Start SEO Server
+$ ## 2. Start SEO Server
 $ phantomjs --disk-cache=no seo.js
 $
-$ ## Setup nginx, add codes below into site configuration:
+$ ## 3. Setup nginx, add codes below into site configuration:
 ```
 ```
 if ($args ~ _escaped_fragment_) {

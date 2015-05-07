@@ -9,30 +9,41 @@ Following [Google ajax crawling standard](https://developers.google.com/webmaste
 How to use
 ------------
 ```
-$ ##Install PhantomJS, on Mac, you can: brew install phantomjs 
+$ ## Install PhantomJS, on Mac, you can: brew install phantomjs 
 $ sudo apt-get install phantomjs  
-$ ##Start SEO Server
-$ phantomjs --disk-cache=no seo.js http://yoursite.domain
+$
+$ ## Start SEO Server
+$ phantomjs --disk-cache=no seo.js
+$
+$ ## Setup nginx, add codes below into site configuration:
+```
+```
+if ($args ~ _escaped_fragment_) {
+    rewrite ^ /snapshot$uri;
+}
+
+location ~ ^/snapshot(.*) {
+    rewrite ^/snapshot(.*)$ $1 break;
+    proxy_pass http://localhost:8888;
+    proxy_set_header Host $host;
+    proxy_connect_timeout 60s;
+}
+
 ```
 
 How to verify
 -------------
 ```
-$ ## For http://site.domain/page#!/id/12
-$ curl http://localhost:8888/page?_escaped_fragment_=/id/12
-$ ## verify it's fully rendered HTML from http://yoursite.domain/page#!/id/12
+$ curl http://yoursite.domain/page#!/id/12
+$ ## verify it's fully rendered HTML
 ```
 
-How to connect Nginx
--------
+How to test your local app w/o nginx
+-------------
 ```
-if ($args ~ "_escaped_fragment_=(.*)") {
-    rewrite ^ /snapshot${uri};
-}   
-location /snapshot {
-    proxy_pass http://localhost:8888;
-    proxy_connect_timeout 60s;
-}
+$ ## if your app is running at http://localhost:3000
+$ curl http://localhost:8888/page#!/id/12 --header Host:localhost:3000
+$ ## verify it's fully rendered HTML
 ```
 
 Note

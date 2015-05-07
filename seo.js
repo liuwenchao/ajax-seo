@@ -1,13 +1,12 @@
 var system = require('system');
 
-if (system.args.length < 2) {
-    console.log("Usage:   phantomjs --disk-cache=false seo.js [website_domain] [port optional, default 8888]");
-    console.log("Example: phantomjs --disk-cache=false seo.js http://www.mysite.com");
+if (system.args.length > 2 || system.args[1] == 'help') {
+    console.log("Usage:   phantomjs --disk-cache=false seo.js [port optional, default 8888]");
+    console.log("Example: phantomjs --disk-cache=false seo.js");
     phantom.exit();
 }
 
-var host   = system.args[1], 
-    port   = system.args[2] || 8888, 
+var port   = system.args[1] || 8888, 
     server = require('webserver').create(),
     log = function(message) {
         var messages = typeof message === 'string' ? [message] : message;
@@ -40,6 +39,21 @@ var render = function(url, cb) {
     page.onConsoleMessage = function(msg, lineNum, sourceId) {
        log(['CONSOLE: ', msg, ' (from line #', lineNum, ' in "', sourceId, '")']);
     };
+    page.onError = function(msg, trace) {
+        var msgStack = [msg];
+
+        if (trace && trace.length) {
+            msgStack.push('TRACE:');
+            trace.forEach(function(t) {
+                msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function +'")' : ''));
+            });
+        }
+
+        console.error(msgStack.join('\n'));
+
+        cb(page.content);
+        page.close();
+    };
 
     // http://phantomjs.org/api/webpage/handler/on-callback.html
     // Consider waitFor example.
@@ -51,27 +65,29 @@ var render = function(url, cb) {
        page.evaluate(function() {
             setTimeout(function() {
                 window.callPhantom();
-            }, 5000);
+            }, 10000);
         });
     };
     page.open(url);
 };
 
 // turn 'page?_escaped_fragment_=/id/36' to 'page#!/id/24'
-var toHashBangUrl = function(path) {
+var toHashBangUrl = function(host, path) {
     var search = path.substring(path.indexOf('?')+1);
     var route_parts = search.split('&').filter(function(v){
         if (v.split('=')[0] === '_escaped_fragment_') return true;
     });
     var route = route_parts[0].split('=')[1];
-    return host
+    return 'http://'
+      + (host || 'localhost')
       + path.slice(0, path.indexOf('?'))
       + '#!' 
       + decodeURIComponent(route);
 };
 
 var service = server.listen(port, function (request, response) {
-    render(toHashBangUrl(request.url), function(html) {
+    // log(JSON.stringify(request));
+    render(toHashBangUrl(request.headers['Host'], request.url), function(html) {
         response.statusCode = 200;
         response.write(html);
         response.close();
@@ -79,7 +95,7 @@ var service = server.listen(port, function (request, response) {
 });
 
 if (service) {
-    log(['SEO server running on port:', port, 'for website:', host]);
+    log(['SEO server running on port:', port]);
     log('Press Ctrl+C to stop...\n');
 } else {
     log(['Error: Could not start server listening on port: ', port]);

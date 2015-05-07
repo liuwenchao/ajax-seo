@@ -1,4 +1,4 @@
-AJAX-SEO
+AJAX-SEO ![Bower Version](https://badge.fury.io/bo/ajax-seo.svg)
 =====
 
 Use [PhantomJS 2.0](http://phantomjs.org/) to build a simple server to provide rendered html to crawlers, for ajax sites. 

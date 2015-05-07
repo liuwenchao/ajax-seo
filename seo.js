@@ -71,7 +71,7 @@ var render = function(url, cb) {
     page.open(url);
 };
 
-// turn 'page?_escaped_fragment_=/id/36' to 'page#!/id/24'
+// turn 'page?_escaped_fragment_=/post/24' to 'page#!/post/24'
 var toHashBangUrl = function(host, path) {
     var search = path.substring(path.indexOf('?')+1);
     var route_parts = search.split('&').filter(function(v){

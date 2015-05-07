@@ -1,0 +1,26 @@
+{
+  "name": "ajax-seo",
+  "version": "0.0.1",
+  "homepage": "https://github.com/liuwenchao/ajax-seo",
+  "authors": [
+    "Louis Liu <louis.wenchao.liu@gmail.com>"
+  ],
+  "description": "Use phantomjs to build a simple server to provide rendered html to crawlers, for ajax sites.",
+  "main": "seo.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "ajax",
+    "seo",
+    "phantomjs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

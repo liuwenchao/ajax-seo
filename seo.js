@@ -11,7 +11,7 @@ var port   = system.args[1] || 8888,
     log = function(message) {
         var messages = typeof message === 'string' ? [message] : message;
         console.info(
-            ['[', new Date().toISOString(), ']']
+            [new Date().toISOString().substr(0, 19), '[INFO] ']
             .concat(messages)
             .join(' ')
         );
@@ -24,7 +24,7 @@ var render = function(url, cb) {
     page.onResourceRequested = function(requestData, request) {
         // Ingore css and fonts.
         if (['text/css', 'application/font-woff'].indexOf(requestData.headers['Content-Type']) >= 0
-            || (/http:\/\/.+?\.(css|woff)/gi).test(requestData.url)) {
+            || (/.+?\.(css|woff)/gi).test(requestData.url)) {
             log(['Request  (#', requestData.id, ') ', requestData.url, 'abort']);
             request.abort();
         } else {
@@ -73,13 +73,15 @@ var render = function(url, cb) {
 
 // turn 'page?_escaped_fragment_=/post/24' to 'page#!/post/24'
 var toHashBangUrl = function(host, path) {
+    if (!host) {
+        log('no Host is set in the request headers! please fix it!');
+    }
     var search = path.substring(path.indexOf('?')+1);
     var route_parts = search.split('&').filter(function(v){
         if (v.split('=')[0] === '_escaped_fragment_') return true;
     });
     var route = route_parts[0].split('=')[1];
-    return 'http://'
-      + (host || 'localhost')
+    return host
       + path.slice(0, path.indexOf('?'))
       + '#!' 
       + decodeURIComponent(route);

@@ -9,32 +9,33 @@ Following [Google ajax crawling standard](https://developers.google.com/webmaste
 How to use
 ------------
 
-1. Install PhantomJS, on Mac, you can: `$ brew install phantomjs `
-```
-$ sudo apt-get install phantomjs  
-```
+1.  Install PhantomJS, on Mac, you can: `$ brew install phantomjs `
 
-2. Start SEO Server
-```
-$ phantomjs --disk-cache=no seo.js
-$ # if you have trouble for https URLs, try this:
-$ # phantomjs --disk-cache=no --ssl-protocol=any seo.js 
-```
+    ```
+    $ sudo apt-get install phantomjs  
+    ```
+2.  Start SEO Server, see [phantomjs options documentation](http://phantomjs.org/api/command-line.html)
 
-3. Setup nginx, add codes below into site configuration:
-```
-if ($args ~ _escaped_fragment_) {
-    rewrite ^ /snapshot$uri;
-}
+    ```
+    $ phantomjs --disk-cache=no seo.js
+    $ # if you have trouble for https URLs, try this:
+    $ # phantomjs --disk-cache=no --ssl-protocol=any seo.js 
+    ```
+3.  Setup nginx, add codes below into site configuration:
 
-location ~ ^/snapshot(.*) {
-    rewrite ^/snapshot(.*)$ $1 break;
-    proxy_pass http://localhost:8888;
-    proxy_set_header Host $scheme://$host;
-    proxy_connect_timeout 60s;
-}
+    ```
+    if ($args ~ _escaped_fragment_) {
+      rewrite ^ /snapshot$uri;
+    }
 
-```
+    location ~ ^/snapshot(.*) {
+      rewrite ^/snapshot(.*)$ $1 break;
+      proxy_pass http://localhost:8888;
+      proxy_set_header Host $scheme://$host;
+      proxy_connect_timeout 60s;
+    }
+
+    ```
 
 How to verify
 -------------

@@ -1,8 +1,9 @@
 var system = require('system');
 
 if (system.args.length > 2 || system.args[1] == 'help') {
-    console.log("Usage:   phantomjs --disk-cache=false seo.js [port optional, default 8888]");
-    console.log("Example: phantomjs --disk-cache=false seo.js");
+    console.log("Usage:   phantomjs seo.js [port -- optional, default 8888]");
+    console.log("Example: phantomjs seo.js");
+    console.log("Example: phantomjs seo.js 8848");
     phantom.exit();
 }
 

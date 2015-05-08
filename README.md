@@ -1,10 +1,10 @@
 AJAX-SEO ![Bower Version](https://badge.fury.io/bo/ajax-seo.svg)
 =====
 
-Use [PhantomJS 2.0](http://phantomjs.org/) to build a simple server to provide rendered html to crawlers, for ajax sites. 
+A simple server to provide rendered html to crawlers, for ajax sites. 
 
-Following [Google ajax crawling standard](https://developers.google.com/webmasters/ajax-crawling/docs/getting-started).
-
+* [Google ajax crawling standard](https://developers.google.com/webmasters/ajax-crawling/docs/getting-started).
+* [PhantomJS 2.0](http://phantomjs.org/)
 
 How to use
 ------------
@@ -14,12 +14,10 @@ How to use
     ```
     $ sudo apt-get install phantomjs  
     ```
-2.  Start SEO Server, see [phantomjs options documentation](http://phantomjs.org/api/command-line.html)
+2.  Start SEO Server
 
     ```
-    $ phantomjs --disk-cache=no seo.js
-    $ # if you have trouble for https URLs, try this:
-    $ # phantomjs --disk-cache=no --ssl-protocol=any seo.js 
+    $ phantomjs seo.js
     ```
 3.  Setup nginx, add codes below into site configuration:
 
@@ -52,9 +50,16 @@ $ curl http://localhost:8888/page#!/id/12 --header Host:localhost:3000
 $ ## verify it's fully rendered HTML
 ```
 
-Note
+Notes
 -------
 For index page of your site, you need to add this in HTML if you haven't:
 ```
 <meta name="fragment" content="!" />
 ```
+
+
+if you have trouble for https URLs, try this:
+```
+$ # phantomjs --ssl-protocol=any seo.js 
+```
+see [phantomjs options documentation](http://phantomjs.org/api/command-line.html)

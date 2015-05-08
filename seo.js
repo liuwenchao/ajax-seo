@@ -23,7 +23,7 @@ var render = function(url, cb) {
     page.settings.loadImages = false;
     page.settings.localToRemoteUrlAccessEnabled = true;
     page.onResourceRequested = function(requestData, request) {
-        // Ingore css and fonts.
+        // Ignore css and fonts.
         if (['text/css', 'application/font-woff'].indexOf(requestData.headers['Content-Type']) >= 0
             || (/.+?\.(css|woff)/gi).test(requestData.url)) {
             log(['Request  (#', requestData.id, ') ', requestData.url, 'abort']);

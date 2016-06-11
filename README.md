@@ -1,13 +1,19 @@
 AJAX-SEO ![Bower Version](https://badge.fury.io/bo/ajax-seo.svg)
 =====
 
-A simple server to provide rendered html to crawlers, for ajax sites. 
+A simple server to provide rendered html to crawlers, for ajax sites.
 
 * [Google ajax crawling standard](https://developers.google.com/webmasters/ajax-crawling/docs/getting-started).
 * [PhantomJS 2.0](http://phantomjs.org/)
 
 How to use
 ------------
+> prepare the web app
+
+make sure it's "AJAX crawlable.", which means it adopts hashbang url schema. Read the google doc again if you don't understand.
+
+
+> prepare the server side
 
 1.  Install PhantomJS, on Mac, you can: `$ brew install phantomjs `
 
@@ -60,6 +66,6 @@ For index page of your site, you need to add this in HTML if you haven't:
 
 if you have trouble for https URLs, try this:
 ```
-$ # phantomjs --ssl-protocol=any seo.js 
+$ # phantomjs --ssl-protocol=any seo.js
 ```
 see [phantomjs options documentation](http://phantomjs.org/api/command-line.html)
